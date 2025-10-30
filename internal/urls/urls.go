@@ -1,6 +1,4 @@
-/*
-Read urls from file.
-*/
+//Read urls from file.
 package urls
 
 import (

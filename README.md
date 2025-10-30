@@ -1,6 +1,12 @@
 # Least Response Time Golang Load Balancer
 
+## Usage
+add your servers in **hosts** file.
 
+run:
+```shell
+go run main.go
+```
 
 ## Algorithm
 

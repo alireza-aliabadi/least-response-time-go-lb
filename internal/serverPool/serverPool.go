@@ -1,3 +1,7 @@
+// Package serverpool provides utilities for managing a pool of backend servers.
+// It is designed for concurrent use and tracks server health and performance
+// metrics to facilitate load balancing, such as selecting the server
+// with the lowest average response time.
 package serverpool
 
 import (
@@ -7,9 +11,8 @@ import (
 	"time"
 )
 
-const (
-	alpha = 0.25
-)
+// alpha is the smoothing factor for the EWMA calculation.
+const alpha = 0.25
 
 type Server struct {
 	mu sync.RWMutex
@@ -68,6 +71,8 @@ func (s *Server) SetAlive(alive bool) {
 	s.Alive = alive
 }
 
+// NewServer creates and initializes a new Server instance from a raw URL string.
+// It also creates a httputil.ReverseProxy for the server.
 func NewServer(rawUrl string) (*Server, error) {
 	url, err := url.Parse(rawUrl)
 	if err != nil {
