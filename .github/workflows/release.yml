@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Linux Binary (${{ matrix.goarch }})
         run: |
-          GOOS=linux GOARCH=${{ matrix.goarch }} go build -o my-app-linux-${{ matrix.goarch }} ./cmd/main.go
+          GOOS=linux GOARCH=${{ matrix.goarch }} go build -o my-app-linux-${{ matrix.goarch }} main.go
         shell: bash
         
       - name: Archive Binary
