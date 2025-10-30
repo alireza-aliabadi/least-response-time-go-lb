@@ -1,0 +1,56 @@
+name: Go Build Multi-Arch Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        goarch: [amd64, arm64]
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Build Linux Binary (${{ matrix.goarch }}) 🐧
+        run: |
+          GOOS=linux GOARCH=${{ matrix.goarch }} go build -o my-app-linux-${{ matrix.goarch }} ./cmd/main.go
+        shell: bash
+        
+      - name: Archive Binary
+        run: tar -czvf my-app-linux-${{ matrix.goarch }}.tar.gz my-app-linux-${{ matrix.goarch }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets
+          path: my-app-linux-${{ matrix.goarch }}.tar.gz
+          retention-days: 1
+          
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    # Only run the release if a tag was pushed
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Download all release-assets artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: release-assets
+          path: release-assets
+          
+      - name: Create GitHub Release and Attach Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          # Attach all files downloaded from the artifacts directory
+          files: release-assets/* ```
