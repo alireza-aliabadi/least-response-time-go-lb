@@ -32,7 +32,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-assets
+          name: release-assets-${{ matrix.goarch }}
           path: lb-${{ matrix.goarch }}.tar.gz
           retention-days: 1
           
@@ -45,7 +45,7 @@ jobs:
       - name: Download all release-assets artifacts
         uses: actions/download-artifact@v4
         with:
-          name: release-assets
+          name: release-assets-*
           path: release-assets
           
       - name: Create GitHub Release and Attach Assets
@@ -53,4 +53,4 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           # Attach all files downloaded from the artifacts directory
-          files: release-assets/* ```
+          files: release-assets/*
