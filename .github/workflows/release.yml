@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
     # Only run the release if a tag was pushed and build was success
     if: success() && startsWith(github.ref, 'refs/tags/')
     steps:
