@@ -48,7 +48,7 @@ jobs:
       - name: Download all release-assets artifacts
         uses: actions/download-artifact@v4
         with:
-          name: release-*
+          # name: release-*
           path: release-assets
           
       - name: Create GitHub Release and Attach Assets
