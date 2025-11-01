@@ -39,12 +39,13 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
-    # Only run the release if a tag was pushed
+    # Only run the release if a tag was pushed and build was success
     if: success() && startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Download all release-assets artifacts
         uses: actions/download-artifact@v4
         with:
+          name: lb-*
           path: release-assets
           
       - name: Create GitHub Release and Attach Assets
