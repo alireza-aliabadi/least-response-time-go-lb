@@ -55,4 +55,4 @@ jobs:
         with:
           name: Release ${{ github.ref_name }}
           # Attach all files downloaded from the artifacts directory
-          files: release-assets/*
+          files: release-assets/**/*.tar.gz
