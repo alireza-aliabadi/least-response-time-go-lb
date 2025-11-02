@@ -1,7 +1,7 @@
 # Least Response Time Golang Load Balancer
 
 ## Usage
-add your servers in **hosts** file beside executable or main file.
+add your servers in **hosts** file beside executable or main file (like hosts file in repository).
 
 run:
 ```shell
