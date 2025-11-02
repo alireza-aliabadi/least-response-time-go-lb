@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net"
 	"net/http"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/alireza-aliabadi/least-response-time-go-lb/internal/serverPool"
 	"github.com/alireza-aliabadi/least-response-time-go-lb/internal/urls"
-
 )
 
 var serverPool serverpool.ServerPool
@@ -16,7 +16,7 @@ var serverPool serverpool.ServerPool
 func loadBalancer(w http.ResponseWriter, r *http.Request) {
 	server := serverPool.GetBestServer()
 	if server == nil {
-		http.Error(w, "Service not available", http.StatusServiceUnavailable)
+		http.Error(w, "Servers aren't available", http.StatusServiceUnavailable)
 		return
 	}
 	
@@ -77,12 +77,15 @@ func main() {
 
 	go HealthCheck(&serverPool)
 
+	lbPort := flag.String("port", "9000", "port that lb runs on")
+	flag.Parse()
+
 	service := http.Server{
-		Addr: ":9000",
+		Addr: ":"+*lbPort,
 		Handler: http.HandlerFunc(loadBalancer),
 	}
 
-	log.Printf("Load balancer started on port 9000, serving %d servers", len(serverPool.Servers))
+	log.Printf("Load balancer started on port %s, serving %d servers", *lbPort, len(serverPool.Servers))
 	if err := service.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}

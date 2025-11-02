@@ -1,12 +1,25 @@
 # Least Response Time Golang Load Balancer
 
 ## Usage
-add your servers in **hosts** file.
+add your servers in **hosts** file beside executable or main file.
 
 run:
 ```shell
-go run main.go
+go run main.go 
 ```
+or download executable from release and run:
+```shell
+./lb-amd64
+# or
+./lb-arm64
+```
+> default port is **9000**. use **--port** flag to use custom port. i.e:
+> ```shell
+> go run main.go --port <port>
+> # or using executables
+> ./lb-amd64 --port <port>
+> ```
+
 
 ## Algorithm
 
